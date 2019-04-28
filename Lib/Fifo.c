@@ -91,13 +91,13 @@ static bool FifoConsumeItems(fifo_desc_t *pFifoDesc, uint32_t itemNb) {
 
 // *** Public Functions ***
 
-void *FifoCreate(uint32_t itemNb, uint32_t itemSize) {
+fifo_desc_t *FifoCreate(uint32_t itemNb, uint32_t itemSize) {
     // Fifo descriptor allocation
     fifo_desc_t *pFifoDesc = (fifo_desc_t *)MemAllocCalloc(sizeof(fifo_desc_t));
     // Fifo descriptor assignment 
     pFifoDesc->ItemNb = itemNb;
     pFifoDesc->ItemSize = itemSize;
-    pFifoDesc->Buffer = MemAllocMalloc(itemNb * itemSize);
+    pFifoDesc->pBuffer = MemAllocMalloc(itemNb * itemSize);
     return pFifoDesc;
 }
 
@@ -134,14 +134,14 @@ bool FifoWrite(fifo_desc_t *pFifoDesc, const void *src, uint32_t itemNb) {
             // Pre roll-over write data
             uint32_t ro_itemNb = pFifoDesc->ItemNb - pFifoDesc->WriteIdx;
             srcOffset = ro_itemNb * pFifoDesc->ItemSize;
-            memcpy(&pFifoDesc->Buffer[pFifoDesc->WriteIdx * pFifoDesc->ItemSize], &((uint8_t *)src)[0], srcOffset);
+            memcpy(&pFifoDesc->pBuffer[pFifoDesc->WriteIdx * pFifoDesc->ItemSize], &((uint8_t *)src)[0], srcOffset);
             // Take roll-over into account
             pFifoDesc->WriteIdx = 0;
             itemNb -= ro_itemNb;
             pFifoDesc->WriteCount += ro_itemNb;
         }
         // Regular write data
-        memcpy(&pFifoDesc->Buffer[pFifoDesc->WriteIdx * pFifoDesc->ItemSize], &((uint8_t *)src)[srcOffset], itemNb * pFifoDesc->ItemSize);
+        memcpy(&pFifoDesc->pBuffer[pFifoDesc->WriteIdx * pFifoDesc->ItemSize], &((uint8_t *)src)[srcOffset], itemNb * pFifoDesc->ItemSize);
         pFifoDesc->WriteIdx += itemNb;
         // Mark data as written
         pFifoDesc->WriteCount += itemNb;
@@ -161,13 +161,13 @@ bool FifoRead(fifo_desc_t *pFifoDesc, void *dest, uint32_t itemNb, bool consume)
             // Pre roll-over read data
             uint32_t ro_itemNb = pFifoDesc->ItemNb - tmpReadIdx;
             buffOffset = ro_itemNb * pFifoDesc->ItemSize;
-            memcpy(&((uint8_t *)dest)[0], &pFifoDesc->Buffer[tmpReadIdx * pFifoDesc->ItemSize], buffOffset);
+            memcpy(&((uint8_t *)dest)[0], &pFifoDesc->pBuffer[tmpReadIdx * pFifoDesc->ItemSize], buffOffset);
             // Take roll-over into account
             tmpReadIdx = 0;
             tmpItemNb -= ro_itemNb;
         }
         // Regular data read
-        memcpy(&((uint8_t *)dest)[buffOffset], &pFifoDesc->Buffer[tmpReadIdx * pFifoDesc->ItemSize], tmpItemNb * pFifoDesc->ItemSize);
+        memcpy(&((uint8_t *)dest)[buffOffset], &pFifoDesc->pBuffer[tmpReadIdx * pFifoDesc->ItemSize], tmpItemNb * pFifoDesc->ItemSize);
         // Check if data is consumed
         if (consume) {
             FifoConsumeItems(pFifoDesc, itemNb);

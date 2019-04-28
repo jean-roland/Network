@@ -31,7 +31,7 @@
 // *** Definitions ***
 // --- Public Types ---
 typedef struct _fifo_desc {
-    uint8_t *Buffer; // pointer to the fifo memory
+    uint8_t *pBuffer; // pointer to the fifo memory
     uint32_t ItemNb; // number of items
     uint32_t ItemSize; // item size
     uint32_t ReadCount; // counter of read items
@@ -48,11 +48,11 @@ typedef struct _fifo_desc {
  * \fn void *FifoCreate(uint32_t itemNb, uint32_t itemSize)
  * \brief Creates a fifo
  *
- * \param itemNb number to rotate
- * \param itemSize number of bits of the rotation
- * \return void *: pointer to the created fifo
+ * \param itemNb number of items of the fifo
+ * \param itemSize item size
+ * \return fifo_desc_t *: pointer to the created fifo
  */
-void *FifoCreate(uint32_t itemNb, uint32_t itemSize);
+fifo_desc_t *FifoCreate(uint32_t itemNb, uint32_t itemSize);
 
 /**
  * \fn uint32_t FifoItemCount(const fifo_desc_t *pFifoDesc)
@@ -114,5 +114,5 @@ bool FifoRead(fifo_desc_t *pFifoDesc, void *dest, uint32_t itemNb, bool consume)
  */
 bool FifoConsume(fifo_desc_t *pFifoDesc, uint32_t itemNb);
 
-/*********************** END OF DEFINITIONS ***********************/
+// *** End Definitions ***
 #endif // _Fifo_h
