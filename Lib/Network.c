@@ -68,8 +68,8 @@ typedef struct _network_port_info {
     uint16_t InPortNb;
     uint16_t OutPortNb;
     uint8_t CounterARP;
-    uint8_t IsVirtualComRx;
-    uint8_t IsVirtualComTx;
+    bool IsVirtualComRx;
+    bool IsVirtualComTx;
     uint8_t DstIpAddr[IP_ADDR_LENGTH];
 } network_port_info_t;
 
