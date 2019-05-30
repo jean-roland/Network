@@ -104,6 +104,7 @@ typedef struct _network_module_info {
 static void NetworkInitMsgInfo(network_msg_info_t *pMsgInfo, const uint8_t *pIpAddr, uint16_t srcPort, uint16_t dstPort, uint16_t dataSize);
 static bool NetworkIsIpValid(const uint8_t *pIpAddr, const uint8_t *pRefIpAddr, const uint8_t *pSubnetMask);
 static bool NetworkIsIpBroadcast(const uint8_t *pIpAddr, const uint8_t *pRefIpAddr, const uint8_t *pSubnetMask);
+static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader);
 // Arp functions
 static arp_entry_t *NetworkGetArpEntry(uint8_t ctrlId, const uint8_t *pIpAddr);
 static arp_entry_t *NetworkCreateArpEntry(uint8_t ctrlId);
@@ -128,7 +129,6 @@ static bool NetworkStoreSendData(uint8_t portId, const uint8_t *pBuffer, uint16_
 static bool NetworkStoreIncMsg(const uint8_t *pBuffer, uint16_t buffSize, uint16_t destPort, uint8_t protocol, uint8_t *pIpSrc);
 // Process functions
 static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer);
-static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader);   
 static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
 static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
 // Check functions
@@ -211,6 +211,29 @@ static bool NetworkIsIpBroadcast(const uint8_t *pIpAddr, const uint8_t *pRefIpAd
     } else {
         return false;
     }
+}
+
+/**
+ * \fn static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader)
+ * \brief Returns if an incoming ip packet has to be processed or not
+ *
+ * \param ctrlId: network controller id
+ * \param pIpHeader: pointer to ipv4 packet header
+ * \return bool: true if we must process the packet
+ */
+static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader) {
+    network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
+
+    // Check if sender has valid ip for this subnet
+    if (NetworkIsIpValid(pIpHeader->srcIp, pNetworkCtrl->IpAddr, pNetworkCtrl->SubnetMask)) {
+        // Check if this packet concerns us
+        bool isBroadcast = NetworkIsIpBroadcast(pIpHeader->dstIp, pNetworkCtrl->IpAddr, pNetworkCtrl->SubnetMask);
+        bool destIsThis = (memcmp(pIpHeader->dstIp, pNetworkCtrl->IpAddr, IP_ADDR_LENGTH) == 0);
+        if (isBroadcast || destIsThis) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -747,7 +770,7 @@ static bool NetworkStoreSendData(uint8_t portId, const uint8_t *pBuffer, uint16_
  * \return bool: true if stored successfully
  */
 static bool NetworkStoreIncMsg(const uint8_t *pBuffer, uint16_t buffSize, uint16_t destPort, uint8_t protocol, uint8_t *pIpSrc) {
-    bool sendStatus = true;
+    bool storeStatus = true;
 
     // Parse all instantiated network ports
     for (uint8_t portId = 0; portId < NetworkInfo.pInitDesc->PortNb; portId++) {
@@ -756,19 +779,19 @@ static bool NetworkStoreIncMsg(const uint8_t *pBuffer, uint16_t buffSize, uint16
             // Check if we can store the message descriptor ahead of time
             if ((NetworkInfo.pPortInfoList[portId].IsVirtualComRx) || (FifoFreeSpace(NetworkInfo.pPortInfoList[portId].pFifoRxMsgDesc) > 0)) {
                 // Try to store the buffer in the main fifo
-                sendStatus = FifoWrite(NetworkInfo.pPortInfoList[portId].pFifoRxMsg, pBuffer, buffSize);
-                if (sendStatus && !NetworkInfo.pPortInfoList[portId].IsVirtualComRx) {
+                storeStatus = FifoWrite(NetworkInfo.pPortInfoList[portId].pFifoRxMsg, pBuffer, buffSize);
+                if (storeStatus && !NetworkInfo.pPortInfoList[portId].IsVirtualComRx) {
                     // Try to store the descriptor
                     network_msg_desc_t msgDesc = {.MsgSize = buffSize, .IpAddr = {0,0,0,0}};
                     memcpy(msgDesc.IpAddr, pIpSrc, IP_ADDR_LENGTH);
-                    sendStatus &= FifoWrite(NetworkInfo.pPortInfoList[portId].pFifoRxMsgDesc, &msgDesc, 1);
+                    storeStatus &= FifoWrite(NetworkInfo.pPortInfoList[portId].pFifoRxMsgDesc, &msgDesc, 1);
                 }
             } else {
-                sendStatus = false;
+                storeStatus = false;
             }
         }
     }
-    return sendStatus;
+    return storeStatus;
 }
 
 /**
@@ -856,29 +879,6 @@ static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer) {
         return false;
     }
     return true;
-}
-
-/**
- * \fn static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader)
- * \brief Returns if an incoming ip packet has to be processed or not
- *
- * \param ctrlId: network controller id
- * \param pIpHeader: pointer to ipv4 packet header
- * \return bool: true if we must process the packet
- */
-static bool NetworkAcceptIncIpPacket(uint8_t ctrlId, ipv4_header_t *pIpHeader) {
-    network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
-
-    // Check if sender has valid ip for this subnet
-    if (NetworkIsIpValid(pIpHeader->srcIp, pNetworkCtrl->IpAddr, pNetworkCtrl->SubnetMask)) {
-        // Check if this packet concerns us
-        bool isBroadcast = NetworkIsIpBroadcast(pIpHeader->dstIp, pNetworkCtrl->IpAddr, pNetworkCtrl->SubnetMask);
-        bool destIsThis = (memcmp(pIpHeader->dstIp, pNetworkCtrl->IpAddr, IP_ADDR_LENGTH) == 0);
-        if (isBroadcast || destIsThis) {
-            return true;
-        }
-    }
-    return false;
 }
 
 /**
