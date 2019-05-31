@@ -80,7 +80,7 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc932aa71d34ea6093902d08f2fc98f1"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8c.html#adc932aa71d34ea6093902d08f2fc98f1">FifoCreate</a> (uint32_t itemNb, uint32_t itemSize)</td></tr>
+<tr class="memitem:adc932aa71d34ea6093902d08f2fc98f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8c.html#adc932aa71d34ea6093902d08f2fc98f1">FifoCreate</a> (uint32_t itemNb, uint32_t itemSize)</td></tr>
 <tr class="memdesc:adc932aa71d34ea6093902d08f2fc98f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fifo.  <a href="#adc932aa71d34ea6093902d08f2fc98f1">More...</a><br /></td></tr>
 <tr class="separator:adc932aa71d34ea6093902d08f2fc98f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68524e929bf64122104c68045941fe5d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8c.html#a68524e929bf64122104c68045941fe5d">FifoItemCount</a> (const <a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *pFifoDesc)</td></tr>
@@ -177,12 +177,12 @@ Functions</h2></td></tr>
 <p>Creates a fifo. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">itemNb</td><td>number to rotate </td></tr>
-    <tr><td class="paramname">itemSize</td><td>number of bits of the rotation </td></tr>
+    <tr><td class="paramname">itemNb</td><td>number of items of the fifo </td></tr>
+    <tr><td class="paramname">itemSize</td><td>item size </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>void *: pointer to the created fifo </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>fifo_desc_t *: pointer to the created fifo </dd></dl>
 
 </div>
 </div>
