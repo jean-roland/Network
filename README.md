@@ -1,4 +1,4 @@
-This is a project exemple to showcase my network library that handles Ethernet, ARP, IP, ICMP echo and UDP protocols.
+This is a project example to showcase my network library that handles Ethernet, ARP, IP, ICMP echo and UDP protocols.
 
 It is meant to be used in an embedded environment, therefore it will work when interfaced with target specific libraries (mac controller and timer/counter).
 

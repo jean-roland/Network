@@ -1,6 +1,6 @@
 /**
  * \file custom_main.c
- * \brief Application exemple for my network library.
+ * \brief Application example for my network library.
  * \author Jean-Roland Gosse
  
     This file is part of Network.
