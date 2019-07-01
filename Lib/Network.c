@@ -93,8 +93,7 @@ typedef struct _network_module_info {
 
 // --- Private Constants ---
 #define NETWORK_ICMP_DATA_SIZE 14 // Arbritary data size value for icmp packets
-#define NETWORK_ARP_REQ_GROUP_NB 1 // arp request number in a request group
-#define NETWORK_ARP_REQ_GROUP_COOLDOWN 5000 // Min time between two arp requests group
+#define NETWORK_ARP_REQ_GROUP_NB 3 // arp request number in a request group
 #define NETWORK_ARP_REQUEST_COOLDOWN 2000 // Max time between two arp requests
 #define NETWORK_ARP_DECAY_COOLDOWN 1000 // Min time between two arp table decay refresh
 #define NETWORK_ARP_DECAY_TIME 60000 // Max time without activity before decaying an arp entry
@@ -860,13 +859,17 @@ static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer) {
             }
         // Arp doesn't exist or invalid, send a request every so often (to avoid arp saturation)
         } else if ((pArpEntry == NULL) || ((!pArpEntry->Status.IsValid) && (NetworkInfo.pInitDesc->GenInterface.pFnTimerIsPassed(*pTimerARP)))) {
-            // Send requests by group of requests (different time intervals intra-group and inter-group)
+            // Send a group of ARP requests
             if (NetworkInfo.pPortInfoList[portId].CounterARP < NETWORK_ARP_REQ_GROUP_NB) {
                 NetworkInfo.pPortInfoList[portId].CounterARP++;
                 *pTimerARP = NetworkInfo.pInitDesc->GenInterface.pFnTimerGetTime() + NETWORK_ARP_REQUEST_COOLDOWN;
             } else {
                 NetworkInfo.pPortInfoList[portId].CounterARP = 0;
-                *pTimerARP = NetworkInfo.pInitDesc->GenInterface.pFnTimerGetTime() + NETWORK_ARP_REQ_GROUP_COOLDOWN;
+                // No ARP answer, we drop the packet
+                FifoConsume(NetworkInfo.pPortInfoList[portId].pFifoTxMsg, msgSize);
+                if (!NetworkInfo.pPortInfoList[portId].IsVirtualComTx) {
+                    FifoConsume(NetworkInfo.pPortInfoList[portId].pFifoTxMsgDesc, 1);
+                }
             }
             // Request arp
             NetworkRequestArp(ctrlId, (uint8_t *)msgInfo.DstIP);
