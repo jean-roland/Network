@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Network: Lib/Fifo.h File Reference</title>
+<title>Network: src/lib/Fifo.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_8f3de2ae926fecfe6abd5379fd2b6eb1.html">Lib</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -103,9 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adeea58b0373def8147142a63e3875778"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8h.html#adeea58b0373def8147142a63e3875778">FifoFreeSpace</a> (const <a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *pFifoDesc)</td></tr>
 <tr class="memdesc:adeea58b0373def8147142a63e3875778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of free space in a fifo.  <a href="#adeea58b0373def8147142a63e3875778">More...</a><br /></td></tr>
 <tr class="separator:adeea58b0373def8147142a63e3875778"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9310c0612baf25481e8ccc16d143756b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8h.html#a9310c0612baf25481e8ccc16d143756b">FifoFlush</a> (<a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *pFifoDesc)</td></tr>
-<tr class="memdesc:a9310c0612baf25481e8ccc16d143756b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush the content of a fifo.  <a href="#a9310c0612baf25481e8ccc16d143756b">More...</a><br /></td></tr>
-<tr class="separator:a9310c0612baf25481e8ccc16d143756b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b7c0a1f4826b32c55b425cacaac718"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8h.html#a60b7c0a1f4826b32c55b425cacaac718">FifoFlush</a> (<a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *pFifoDesc)</td></tr>
+<tr class="memdesc:a60b7c0a1f4826b32c55b425cacaac718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush the content of a fifo.  <a href="#a60b7c0a1f4826b32c55b425cacaac718">More...</a><br /></td></tr>
+<tr class="separator:a60b7c0a1f4826b32c55b425cacaac718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fa7be0b9f6274cb98c36ccf70259905"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fifo_8h.html#a0fa7be0b9f6274cb98c36ccf70259905">FifoWrite</a> (<a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *pFifoDesc, const void *src, uint32_t itemNb)</td></tr>
 <tr class="memdesc:a0fa7be0b9f6274cb98c36ccf70259905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write items in a fifo.  <a href="#a0fa7be0b9f6274cb98c36ccf70259905">More...</a><br /></td></tr>
 <tr class="separator:a0fa7be0b9f6274cb98c36ccf70259905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,14 +200,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9310c0612baf25481e8ccc16d143756b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9310c0612baf25481e8ccc16d143756b">&#9670;&nbsp;</a></span>FifoFlush()</h2>
+<a id="a60b7c0a1f4826b32c55b425cacaac718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60b7c0a1f4826b32c55b425cacaac718">&#9670;&nbsp;</a></span>FifoFlush()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void FifoFlush </td>
+          <td class="memname">bool FifoFlush </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct__fifo__desc.html">fifo_desc_t</a> *&#160;</td>
           <td class="paramname"><em>pFifoDesc</em></td><td>)</td>

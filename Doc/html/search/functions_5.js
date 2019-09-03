@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['utils_2ec',['Utils.c',['../_utils_8c.html',1,'']]],
-  ['utils_2eh',['Utils.h',['../_utils_8h.html',1,'']]],
   ['utilsdiffuint16',['UtilsDiffUint16',['../_utils_8c.html#abc67102a207ab5e8c8a33e66570bf8b9',1,'UtilsDiffUint16(uint16_t old, uint16_t cur):&#160;Utils.c'],['../_utils_8h.html#abc67102a207ab5e8c8a33e66570bf8b9',1,'UtilsDiffUint16(uint16_t old, uint16_t cur):&#160;Utils.c']]],
   ['utilsdiffuint32',['UtilsDiffUint32',['../_utils_8c.html#a218668bde9d619d1726fc342fdef8b4e',1,'UtilsDiffUint32(uint32_t old, uint32_t cur):&#160;Utils.c'],['../_utils_8h.html#a218668bde9d619d1726fc342fdef8b4e',1,'UtilsDiffUint32(uint32_t old, uint32_t cur):&#160;Utils.c']]],
   ['utilsrotruint16',['UtilsRotrUint16',['../_utils_8c.html#a17105578c61cd260785e3f85906edbb6',1,'UtilsRotrUint16(uint16_t n, uint8_t c):&#160;Utils.c'],['../_utils_8h.html#a17105578c61cd260785e3f85906edbb6',1,'UtilsRotrUint16(uint16_t n, uint8_t c):&#160;Utils.c']]],

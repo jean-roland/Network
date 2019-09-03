@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Network: Lib/MacCtrl.c File Reference</title>
+<title>Network: src/lib/MacCtrl.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_8f3de2ae926fecfe6abd5379fd2b6eb1.html">Lib</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -78,7 +78,7 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="_utils_8h_source.html">Utils.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_mem_alloc_8h_source.html">MemAlloc.h</a>&gt;</code><br />
+<code>#include &lt;MemAlloc.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="_fifo_8h_source.html">Fifo.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_mac_ctrl_8h_source.html">MacCtrl.h</a>&gt;</code><br />
 </div><table class="memberdecls">
@@ -107,7 +107,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ae79c40eaaa4ef72ea02f1848eab105cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a mac controller instance.  <a href="#ae79c40eaaa4ef72ea02f1848eab105cb">More...</a><br /></td></tr>
 <tr class="separator:ae79c40eaaa4ef72ea02f1848eab105cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c3e5b7f77dd06a38798c68df3945faa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_mac_ctrl_8c.html#a6c3e5b7f77dd06a38798c68df3945faa">MacCtrlSetMacAddress</a> (uint8_t macCtrlId, const uint8_t *pNewMacAddr)</td></tr>
-<tr class="memdesc:a6c3e5b7f77dd06a38798c68df3945faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of the ethernet phy.  <a href="#a6c3e5b7f77dd06a38798c68df3945faa">More...</a><br /></td></tr>
+<tr class="memdesc:a6c3e5b7f77dd06a38798c68df3945faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of phy interfaces.  <a href="#a6c3e5b7f77dd06a38798c68df3945faa">More...</a><br /></td></tr>
 <tr class="separator:a6c3e5b7f77dd06a38798c68df3945faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc0b6e3aed4714610fc9ebd1699fbc9c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_mac_ctrl_8c.html#afc0b6e3aed4714610fc9ebd1699fbc9c">MacCtrlWriteData</a> (uint8_t macCtrlId, const uint8_t *pBuffer, uint16_t buffSize)</td></tr>
 <tr class="memdesc:afc0b6e3aed4714610fc9ebd1699fbc9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store data in the rx fifo (should be called by mac controller interruption)  <a href="#afc0b6e3aed4714610fc9ebd1699fbc9c">More...</a><br /></td></tr>
@@ -338,7 +338,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of the ethernet phy. </p>
+<p>Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of phy interfaces. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">macCtrlId</td><td>mac controller id </td></tr>
