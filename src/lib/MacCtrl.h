@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _Mac_Ctrl_h
-#define _Mac_Ctrl_h
+#ifndef _mac_ctrl_h
+#define _mac_ctrl_h
 
 // *** Libraries include ***
 // Standard Lib
@@ -28,7 +28,7 @@
 #include <stdint.h>
 // Custom Lib
 #include <Common.h>
-#include <LibIp.h>
+#include <Libip.h>
 
 // *** Definitions ***
 // --- Public Types ---
@@ -66,7 +66,7 @@ bool MacCtrlAdd(uint8_t macCtrlId, const mac_ctrl_init_desc_t *pCtrlInitDesc);
 
 /**
  * \fn bool MacCtrlSetMacAddress(uint8_t macCtrlId, const uint8_t *pNewMacAddr)
- * \brief Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of the ethernet phy
+ * \brief Modify the mac controller mac address /!\ WARNING /!\ Requires a reset of phy interfaces
  *
  * \param macCtrlId mac controller id
  * \param pNewMacAddr pointer to the new mac address
@@ -117,4 +117,4 @@ bool MacCtrlGetData(uint8_t macCtrlId, uint8_t *pBuffer, uint16_t *pBuffSize);
 bool MacCtrlSendData(uint8_t macCtrlId, const uint8_t *pBuffer, uint16_t buffSize);
 
 // *** End Definitions ***
-#endif // _Mac_Ctrl_h
+#endif // _mac_ctrl_h

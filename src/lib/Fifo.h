@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
  
-#ifndef _Fifo_h
-#define _Fifo_h
+#ifndef _fifo_h
+#define _fifo_h
 
 // *** Libraries include ***
 // Standard lib
@@ -79,7 +79,7 @@ uint32_t FifoFreeSpace(const fifo_desc_t *pFifoDesc);
  * \param pFifoDesc fifo descriptor
  * \return void
  */
-void FifoFlush(fifo_desc_t *pFifoDesc);
+bool FifoFlush(fifo_desc_t *pFifoDesc);
 
 /**
  * \fn bool FifoWrite(fifo_desc_t *pFifoDesc, const void *src, uint32_t itemNb)
@@ -115,4 +115,4 @@ bool FifoRead(fifo_desc_t *pFifoDesc, void *dest, uint32_t itemNb, bool consume)
 bool FifoConsume(fifo_desc_t *pFifoDesc, uint32_t itemNb);
 
 // *** End Definitions ***
-#endif // _Fifo_h
+#endif // _fifo_h

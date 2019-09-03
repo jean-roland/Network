@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _Timer_h
-#define _Timer_h
+#ifndef _timer_h
+#define _timer_h
 
 //*** Libraries include ***
 // Standard Lib

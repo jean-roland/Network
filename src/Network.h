@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _Network_h
-#define _Network_h
+#ifndef _network_h
+#define _network_h
 
 //*** Libraries include ***
 // Standard Lib
@@ -28,7 +28,7 @@
 #include <stdint.h>
 // Custom Lib
 #include <Common.h>
-#include <LibIp.h>
+#include <Libip.h>
 
 // *** Definitions ***
 // --- Public Types ---
@@ -398,4 +398,4 @@ uint16_t NetworkPortGetOutPortNb(uint8_t portId);
 bool NetworkPortSetOutPortNb(uint8_t portId, uint16_t newOutPortNb);
 
 // *** End Definitions ***
-#endif // _Network_h
+#endif // _network_h

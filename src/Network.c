@@ -421,7 +421,10 @@ static bool NetworkUpdateArpTable(uint8_t ctrlId, const uint8_t *pSourceIp, cons
  * \param buffSize: size of the buffer
  * \return bool: true if arp packet was processed successfully
  */
-static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
+ 
+ #include <stdio.h>
+ 
+ static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
     network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
     ethernet_header_t *pEthHeader = (ethernet_header_t*) pBuffer;
     arp_header_t *pArpHeader = (arp_header_t *)(pBuffer + ETH_HEADER_SIZE);

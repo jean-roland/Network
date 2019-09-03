@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _Common_h
-#define _Common_h
+#ifndef _common_h
+#define _common_h
 
 // *** Libraries include ***
 // Standard lib
@@ -41,4 +41,4 @@ typedef void it_handler_ft(void);
 // --- Public Function Prototypes ---
 
 // *** End Definitions ***
-#endif // _Common_h
+#endif // _common_h

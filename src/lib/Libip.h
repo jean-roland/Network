@@ -1,5 +1,5 @@
 /**
- * \file LibIp.h
+ * \file Liblp.h
  * \brief Librairy containing types for Ethernet and IP modules
  * \author Jean-Roland Gosse
  
@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef LibIp_h
-#define LibIp_h
+#ifndef libip_h
+#define libip_h
 
 // *** Libraries include ***
 // Standard lib
@@ -152,4 +152,4 @@ typedef struct _udp_header {
 // --- Public Function Prototypes ---
 
 // *** End Definitions ***
-#endif // LibIp_h
+#endif // libip_h

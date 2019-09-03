@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
  
-#ifndef _Utils_h
-#define _Utils_h
+#ifndef _utils_h
+#define _utils_h
 
 // *** Libraries include ***
 // Standard lib

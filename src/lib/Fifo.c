@@ -32,6 +32,7 @@
 // --- Private Function Prototypes ---
 static uint32_t FifoGetItemCount(uint32_t readCount, uint32_t writeCount);
 static uint32_t FifoGetFreeSpace(uint32_t totalCount, uint32_t readCount, uint32_t writeCount);
+static bool FifoConsumeItems(fifo_desc_t *pFifoDesc, uint32_t itemNb);
 
 // --- Private Variables ---
 // *** End Definitions ***
@@ -73,11 +74,11 @@ inline static uint32_t FifoGetFreeSpace(uint32_t totalCount, uint32_t readCount,
  */
 static bool FifoConsumeItems(fifo_desc_t *pFifoDesc, uint32_t itemNb) {
     // Check if there is enough data in the fifo
-    if(FifoGetItemCount(pFifoDesc->ReadCount, pFifoDesc->WriteCount) >= itemNb) {
+    if (FifoGetItemCount(pFifoDesc->ReadCount, pFifoDesc->WriteCount) >= itemNb) {
         // Mark data as read, consuming it
         pFifoDesc->ReadCount += itemNb;
         // Check for roll-over
-        if((pFifoDesc->ReadIdx + itemNb) >= pFifoDesc->ItemNb) {
+        if ((pFifoDesc->ReadIdx + itemNb) >= pFifoDesc->ItemNb) {
             // Take roll-over into account
             itemNb -= pFifoDesc->ItemNb - pFifoDesc->ReadIdx;
             pFifoDesc->ReadIdx = 0;
@@ -103,7 +104,7 @@ fifo_desc_t *FifoCreate(uint32_t itemNb, uint32_t itemSize) {
 
 uint32_t FifoItemCount(const fifo_desc_t *pFifoDesc) {
     // Check if pFifoDesc valid
-    if(pFifoDesc != NULL)
+    if (pFifoDesc != NULL)
         return FifoGetItemCount(pFifoDesc->ReadCount, pFifoDesc->WriteCount);
     else
         return 0;
@@ -111,23 +112,28 @@ uint32_t FifoItemCount(const fifo_desc_t *pFifoDesc) {
 
 uint32_t FifoFreeSpace(const fifo_desc_t *pFifoDesc) {
     //Check if pFifoDesc valid
-    if(pFifoDesc != NULL)
+    if (pFifoDesc != NULL)
         return FifoGetFreeSpace(pFifoDesc->ItemNb, pFifoDesc->ReadCount, pFifoDesc->WriteCount);
     else
         return 0;
 }
 
-void FifoFlush(fifo_desc_t *pFifoDesc) {
+bool FifoFlush(fifo_desc_t *pFifoDesc) {
+	//Check if pFifoDesc valid
+	if (pFifoDesc == NULL) {
+		return false;
+	}
     // Reset the descriptor
     pFifoDesc->WriteIdx = 0;
     pFifoDesc->ReadIdx = 0;
     pFifoDesc->ReadCount = 0;
     pFifoDesc->WriteCount = 0;
+	return true;
 }
 
 bool FifoWrite(fifo_desc_t *pFifoDesc, const void *src, uint32_t itemNb) {
     // Check if pFifoDesc, src valid and if enough space to write
-    if((pFifoDesc != NULL) && (src != NULL) && (FifoFreeSpace(pFifoDesc) >= itemNb)) {
+    if ((pFifoDesc != NULL) && (src != NULL) && (FifoFreeSpace(pFifoDesc) >= itemNb)) {
         uint32_t srcOffset = 0;
         // Check for roll-over
         if ((pFifoDesc->WriteIdx + itemNb) >= pFifoDesc->ItemNb) {
@@ -179,8 +185,9 @@ bool FifoRead(fifo_desc_t *pFifoDesc, void *dest, uint32_t itemNb, bool consume)
 
 bool FifoConsume(fifo_desc_t *pFifoDesc, uint32_t itemNb) {
     //Check if pFifoDesc valid
-    if(pFifoDesc != NULL)
+    if (pFifoDesc != NULL) {
         return FifoConsumeItems(pFifoDesc, itemNb);
-    else
+    } else {
         return false;
+	}
 }

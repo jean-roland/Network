@@ -1,5 +1,5 @@
 /**
- * \file MemAlloc.h
+ * \file mem_alloc.h
  * \brief Memory allocation module
  * \author Jean-Roland Gosse
  
@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _Mem_Alloc_h
-#define _Mem_Alloc_h
+#ifndef _mem_alloc_h
+#define _mem_alloc_h
 
 //*** Libraries include ***
 // Standard lib
@@ -59,7 +59,7 @@ void *MemAllocMalloc(uint32_t size);
  * \param size size of the memory block (bytes)
  * \return void *: pointer to the allocated memory
  */
-void * MemAllocCalloc(uint32_t size);
+void *MemAllocCalloc(uint32_t size);
 
 /**
  * \fn void * MemAllocMallocAligned(uint32_t size, uint8_t alignment)
@@ -69,7 +69,7 @@ void * MemAllocCalloc(uint32_t size);
  * \param alignment alignment of the memory block (bits)
  * \return void *: pointer to the allocated memory
  */
-void * MemAllocMallocAligned(uint32_t size, uint8_t alignment);
+void *MemAllocMallocAligned(uint32_t size, uint8_t alignment);
 
 /**
  * \fn void * MemAllocCallocAligned(uint32_t size, uint8_t alignment)
@@ -79,7 +79,7 @@ void * MemAllocMallocAligned(uint32_t size, uint8_t alignment);
  * \param alignment alignment of the memory block (bits)
  * \return void *: pointer to the allocated memory
  */
-void * MemAllocCallocAligned(uint32_t size, uint8_t alignment);
+void *MemAllocCallocAligned(uint32_t size, uint8_t alignment);
 
 // *** End Definitions ***
-#endif // _Mem_Alloc_h
+#endif // _mem_alloc_h
