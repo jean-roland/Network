@@ -1,8 +1,8 @@
 /**
- * \file mem_alloc.h
+ * \file MemAlloc.h
  * \brief Memory allocation module
  * \author Jean-Roland Gosse
- 
+
     This file is part of Network.
 
     Network is free software: you can redistribute it and/or modify
@@ -19,8 +19,8 @@
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
 
-#ifndef _mem_alloc_h
-#define _mem_alloc_h
+#ifndef _Mem_Alloc_h
+#define _Mem_Alloc_h
 
 //*** Libraries include ***
 // Standard lib
@@ -35,7 +35,7 @@
 
 /**
  * \fn void MemAllocInit(const uint8_t *pHeap, uint32_t heapSize)
- * \brief Heap initialisation function, memory will be used for permanent allocation
+ * \brief Heap initialization function, memory will be used for permanent allocation
  *
  * \param pHeap address to the heap (must be 32-bits aligned)
  * \param heapSize heap's size (bytes)
@@ -54,7 +54,7 @@ void *MemAllocMalloc(uint32_t size);
 
 /**
  * \fn void * MemAllocCalloc(uint32_t size)
- * \brief Standard memory allocation function with initialisation to 0
+ * \brief Standard memory allocation function with initialization to 0
  *
  * \param size size of the memory block (bytes)
  * \return void *: pointer to the allocated memory
@@ -73,7 +73,7 @@ void *MemAllocMallocAligned(uint32_t size, uint8_t alignment);
 
 /**
  * \fn void * MemAllocCallocAligned(uint32_t size, uint8_t alignment)
- * \brief Memory allocation function with alignment (must be multiple of 4) and initialisation to 0
+ * \brief Memory allocation function with alignment (must be multiple of 4) and initialization to 0
  *
  * \param size size of the memory block (bytes)
  * \param alignment alignment of the memory block (bits)
@@ -82,4 +82,4 @@ void *MemAllocMallocAligned(uint32_t size, uint8_t alignment);
 void *MemAllocCallocAligned(uint32_t size, uint8_t alignment);
 
 // *** End Definitions ***
-#endif // _mem_alloc_h
+#endif // _Mem_Alloc_h
