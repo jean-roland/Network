@@ -10,15 +10,15 @@
   :use_test_preprocessor: TRUE
   :use_auxiliary_dependencies: TRUE
   :build_root: build
-#  :release_build: TRUE
+  :release_build: TRUE
   :test_file_prefix: test_
   :which_ceedling: vendor/ceedling
   :default_tasks:
     - test:all
 
-#:release_build:
-#  :output: MyApp.out
-#  :use_assembly: FALSE
+:release_build:
+  :output: Network
+  :use_assembly: FALSE
 
 :environment:
 
@@ -69,9 +69,8 @@
       :*:
         - -std=c99
         - -Wall
-    # :link:
-      # :*:
-        # - -lm
+     #:link:
+       #:*:
 #:tools:
 # Ceedling defaults to using gcc for compiling, linking, etc.
 # As [:tools] is blank, gcc will be used (so long as it's in your system path)
