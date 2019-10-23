@@ -64,6 +64,15 @@
     :html_report_type: basic
 
 :flags:
+  :release:
+    :compile:
+      :*:
+        - -std=c99
+        - -Wall
+        - -Wpedantic
+        - -O2
+     #:link:
+       #:*:
   :test:
     :compile:
       :*:
