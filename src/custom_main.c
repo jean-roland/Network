@@ -2,7 +2,7 @@
  * \file custom_main.c
  * \brief Application example for my network library.
  * \author Jean-Roland Gosse
- 
+
     This file is part of Network.
 
     Network is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ static void app_init(void) {
     // Mac controller
     MacCtrlInit(&MacCtrlInitDesc);
     MacCtrlAdd(MAIN_MAC_CTRL, &MainMacCtrlDesc);
-    // Network 
+    // Network
     NetworkInit(&NetworkInitDesc);
     NetworkCtrlAdd(MAIN_NETWORK_CTRL, &NetworkMainCtrlDesc);
     NetworkPortAdd(MAIN_NETWORK_PORT, &NetworkMainPortDesc);
@@ -138,7 +138,7 @@ static void app_process(void) {
  *
 * \return void
  */
-void main(void) {
+int main(void) {
     // Modules initialization
     app_init();
 
@@ -146,4 +146,5 @@ void main(void) {
     while (true) {
         app_process();
     }
+    return 0;
 }
