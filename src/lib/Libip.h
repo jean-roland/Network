@@ -2,7 +2,7 @@
  * \file Liblp.h
  * \brief Librairy containing types for Ethernet and IP modules
  * \author Jean-Roland Gosse
- 
+
     This file is part of Network.
 
     Network is free software: you can redistribute it and/or modify
@@ -136,11 +136,11 @@ typedef struct _udp_header {
 } udp_header_t; // total: 8 bytes, 0 padding
 
 // Headers size
-#define ETH_HEADER_SIZE ( sizeof( ethernet_header_t ) ) // [14 bytes]
-#define ARP_HEADER_SIZE ( sizeof( arp_header_t ) ) // [28 bytes]
-#define IPV4_HEADER_SIZE ( sizeof( ipv4_header_t ) ) // [20 bytes]
-#define ICMP_HEADER_SIZE ( sizeof( icmp_header_t ) ) // [8 bytes]
-#define UDP_HEADER_SIZE ( sizeof( udp_header_t ) ) // [8 bytes]
+#define ETH_HEADER_SIZE (sizeof(ethernet_header_t)) // [14 bytes]
+#define ARP_HEADER_SIZE (sizeof(arp_header_t)) // [28 bytes]
+#define IPV4_HEADER_SIZE (sizeof(ipv4_header_t)) // [20 bytes]
+#define ICMP_HEADER_SIZE (sizeof(icmp_header_t)) // [8 bytes]
+#define UDP_HEADER_SIZE (sizeof(udp_header_t)) // [8 bytes]
 #define NETWORK_HEADER_SIZE (ETH_HEADER_SIZE + IPV4_HEADER_SIZE + UDP_HEADER_SIZE) // [42 bytes] network header size (UDP + IP + ETH)
 
 // Other Sizes
