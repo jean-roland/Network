@@ -55,7 +55,7 @@ static mac_ctrl_module_info_t MacCtrlInfo;
 bool MacCtrlInit(const mac_init_desc_t *pInitDesc) {
     if (pInitDesc != NULL) {
         MacCtrlInfo.pInitDesc = pInitDesc;
-        MacCtrlInfo.pMacCtrlInfoTable = MemAllocCalloc(sizeof(mac_ctrl_info_t) * pInitDesc->MacCtrlNb);
+        MacCtrlInfo.pMacCtrlInfoTable = MemAllocCalloc((uint32_t)sizeof(mac_ctrl_info_t) * pInitDesc->MacCtrlNb);
         return true;
     } else {
         return false;
