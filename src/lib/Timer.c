@@ -53,7 +53,7 @@ static timer_module_info_t TimerInfo;
 bool TimerInit(const timer_init_desc_t *pInitDesc) {
     if (pInitDesc != NULL) {
         TimerInfo.pDesc = pInitDesc;
-        TimerInfo.pTimerInfoList = MemAllocCalloc(pInitDesc->TimerNb * sizeof(timer_inst_info_t));        
+        TimerInfo.pTimerInfoList = MemAllocCalloc(pInitDesc->TimerNb * (uint32_t)sizeof(timer_inst_info_t));
         TimerInfo.RefTimerId = 0;
         return true;
     } else {
@@ -74,7 +74,7 @@ bool TimerAdd(uint8_t timerId, bool isRef) {
     }
 }
 
-bool TimerIncrement(uint8_t timerId) {    
+bool TimerIncrement(uint8_t timerId) {
     if (timerId < TimerInfo.pDesc->TimerNb) {
         TimerInfo.pTimerInfoList[timerId].Counter += 1;
         return true;
@@ -115,7 +115,7 @@ bool TimerIsPassed(uint8_t timerId, uint32_t timeValue) {
     if (timerId < TimerInfo.pDesc->TimerNb) {
         uint32_t currTime = TimerGetTime(timerId);
         uint32_t diffTime = (currTime <= timeValue) ? timeValue - currTime : currTime - timeValue;
-    
+
         return (diffTime < 0x80000000) ? (currTime >= timeValue) : (currTime <= timeValue);
     } else {
         return false;
