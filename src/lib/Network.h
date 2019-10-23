@@ -63,7 +63,7 @@ typedef struct _network_ctrl_desc {
     uint8_t DefaultIpAddr[IP_ADDR_LENGTH];
     uint8_t DefaultSubnetMask[IP_ADDR_LENGTH];
     uint8_t MacCtrlId; // mac controller id associated to this controller
-    uint8_t ArpEntryNb; // number of ARP entries in the controller ARP table   
+    uint8_t ArpEntryNb; // number of ARP entries in the controller ARP table
 } network_ctrl_desc_t;
 
 typedef struct _network_port_desc {
@@ -93,7 +93,7 @@ bool NetworkInit(const network_init_desc_t *pInitDesc);
 
 /**
  * \fn bool NetworkCtrlAdd(uint8_t ctrlId, const network_ctrl_desc_t *pCtrlDesc)
- * \brief Add a network controller 
+ * \brief Add a network controller
  *
  * \param ctrlId network controller id
  * \param pCtrlDesc pointer to the controller descriptor
@@ -103,7 +103,7 @@ bool NetworkCtrlAdd(uint8_t ctrlId, const network_ctrl_desc_t *pCtrlDesc);
 
 /**
  * \fn bool NetworkPortAdd(uint8_t portId, const network_port_desc_t *pPortDesc)
- * \brief Add a network port 
+ * \brief Add a network port
  *
  * \param portId network port id
  * \param pPortDesc pointer to the port descriptor
@@ -191,7 +191,7 @@ bool NetworkCtrlSendPingIcmp(uint8_t ctrlId, const uint8_t *pIpAddress);
 
 /**
  * \fn bool NetworkCtrlCheckPingReply(uint8_t ctrlId, uint32_t *pDelayValue)
- * \brief Returns if we received a reply to the last icmp echo request 
+ * \brief Returns if we received a reply to the last icmp echo request
  *
  * \param ctrlId network controller id
  * \param pDelayValue pointer to contain the request-response delay (optional, valid only when function returns true)
@@ -297,7 +297,7 @@ uint8_t *NetworkCtrlGetMacAddr(uint8_t ctrlId);
  * \brief Modify the mac address of a network controller /!\ WARNING /!\ THIS FUNCTION REQUIRES A RESET OF THE NETWORK PHY
  *
  * \param ctrlId network controller id
- * \param pNewMacAddr poiner to the new mac address 
+ * \param pNewMacAddr poiner to the new mac address
  * \return bool: true if modified successfully
  */
 bool NetworkCtrlSetMacAddr(uint8_t ctrlId, const uint8_t *pNewMacAddr);
