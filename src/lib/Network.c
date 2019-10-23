@@ -85,7 +85,7 @@ typedef struct _network_ctrl_info {
 } network_ctrl_info_t;
 
 typedef struct _network_module_info {
-    const network_init_desc_t *pInitDesc; // Module initialisation descriptor 
+    const network_init_desc_t *pInitDesc; // Module initialisation descriptor
     network_ctrl_info_t *pCtrlInfoList; // Network controller list
     network_port_info_t *pPortInfoList; // Network port list
     uint8_t *pBuffer; // Tx/Rx buffer
@@ -110,7 +110,7 @@ static arp_entry_t *NetworkCreateArpEntry(uint8_t ctrlId);
 static bool NetworkRequestArp(uint8_t ctrlId, const uint8_t *pIpAddr);
 static bool NetworkStoreArp(uint8_t ctrlId, const uint8_t *pIpAddr, const uint8_t *pMacAddr, bool hasDecay);
 static bool NetworkUpdateArpTable(uint8_t ctrlId, const uint8_t *pSourceIp, const uint8_t *pSourceMac, bool hasDecay);
-static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
+static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize);
 // Data send functions
 static bool NetworkSendEthPacket(uint8_t ctrlId, uint8_t *pBuffer, network_msg_info_t msgInfo);
 static bool NetworkSendIpPacket(uint8_t ctrlId, uint8_t protocol, uint8_t *pBuffer, network_msg_info_t msgInfo);
@@ -119,17 +119,17 @@ static bool NetworkSendUdpPacket(uint8_t ctrlId, uint8_t *pBuffer, network_msg_i
 static uint16_t NetworkIcmpChecksum(const uint16_t *pBuffer, uint16_t buffSize);
 static uint16_t NetworkIcmpLength(uint8_t *pHeader, uint16_t ipMsgSize);
 static bool NetworkSendIcmpEchoRequest(uint8_t ctrlId, const uint8_t *pIpAdress);
-static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
+static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize);
 static bool NetworkProcessIcmpEchoReply(uint8_t ctrlId);
-static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t bufferSize);
+static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize);
 // Store data functions
 static uint8_t *NetworkDecodeUdpPacket(uint8_t *pBuffer, uint16_t *pDataSize, uint16_t *pDestPort);
 static bool NetworkStoreSendData(uint8_t portId, const uint8_t *pBuffer, uint16_t buffSize, const uint8_t *pIpDest);
 static bool NetworkStoreIncMsg(const uint8_t *pBuffer, uint16_t buffSize, uint16_t destPort, uint8_t protocol, uint8_t *pIpSrc);
 // Process functions
 static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer);
-static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
-static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize);
+static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize);
+static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize);
 // Check functions
 static bool NetworkCtrlValid(uint8_t ctrlId);
 static bool NetworkPortValid(uint8_t portId);
@@ -172,7 +172,7 @@ static void NetworkInitMsgInfo(network_msg_info_t *pMsgInfo, const uint8_t *pIpA
  * \return bool: true if ip address valid for this subnet
  */
 static bool NetworkIsIpValid(const uint8_t *pIpAddr, const uint8_t *pRefIpAddr, const uint8_t *pSubnetMask) {
-    uint8_t maskedIpAddr[IP_ADDR_LENGTH] = {0,0,0,0}; 
+    uint8_t maskedIpAddr[IP_ADDR_LENGTH] = {0,0,0,0};
     uint8_t maskedRefIpAddr[IP_ADDR_LENGTH] = {0,0,0,0};
 
     // Mask the address
@@ -387,7 +387,7 @@ static bool NetworkStoreArp(uint8_t ctrlId, const uint8_t *pIpAddr, const uint8_
 
 /**
  * \fn static bool NetworkUpdateArpTable(uint8_t ctrlId, const uint8_t *pSourceIp, const uint8_t *pSourceMac, bool hasDecay)
- * \brief Update the arp table with info from received packets 
+ * \brief Update the arp table with info from received packets
  *
  * \param ctrlId network controller id
  * \param pSourceIp pointer to sender ip address
@@ -413,7 +413,7 @@ static bool NetworkUpdateArpTable(uint8_t ctrlId, const uint8_t *pSourceIp, cons
 }
 
 /**
- * \fn static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize)
+ * \fn static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize)
  * \brief Process incoming arp packets
  *
  * \param ctrlId: network controller id
@@ -421,10 +421,10 @@ static bool NetworkUpdateArpTable(uint8_t ctrlId, const uint8_t *pSourceIp, cons
  * \param buffSize: size of the buffer
  * \return bool: true if arp packet was processed successfully
  */
- 
+
  #include <stdio.h>
- 
- static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
+
+ static bool NetworkProcessArpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize) {
     network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
     ethernet_header_t *pEthHeader = (ethernet_header_t*) pBuffer;
     arp_header_t *pArpHeader = (arp_header_t *)(pBuffer + ETH_HEADER_SIZE);
@@ -495,7 +495,7 @@ static bool NetworkSendEthPacket(uint8_t ctrlId, uint8_t *pBuffer, network_msg_i
             memset(pEthHeader->dstMac, 0xFF, MAC_ADDR_LENGTH);
         // Network type 2 frame
         pEthHeader->lengthOrType = 0x0008; // UtilsRotrUint16(0x0800, 8);
-        msgInfo.HeaderSize += ETH_HEADER_SIZE;
+        msgInfo.HeaderSize += (uint16_t)ETH_HEADER_SIZE;
         // Send packet
         return pNetworkCtrl->pDesc->ComInterface.MacCtrlSendMsg(pNetworkCtrl->pDesc->MacCtrlId, pBuffer, msgInfo.HeaderSize + msgInfo.DataSize);
     } else {
@@ -522,7 +522,7 @@ static bool NetworkSendIpPacket(uint8_t ctrlId, uint8_t protocol, uint8_t *pBuff
     pIpHeader->version = 4; // ipv4
     pIpHeader->ecn = 0; // Do not support explicit congestion notification
     pIpHeader->dscp = 0; // Best effort
-    pIpHeader->length = UtilsRotrUint16((IPV4_HEADER_SIZE + msgInfo.DataSize + msgInfo.HeaderSize), 8); // Total size (data + header)
+    pIpHeader->length = UtilsRotrUint16(((uint16_t)IPV4_HEADER_SIZE + msgInfo.DataSize + msgInfo.HeaderSize), 8); // Total size (data + header)
     pIpHeader->identification = 0; // No id
     pIpHeader->fragmentOffsetAndFlags = 64; // (2 << 5) + 0; // No fragment offset nor fragmentation
     pIpHeader->ttl = 128;  // Time to live (hop count)
@@ -530,7 +530,7 @@ static bool NetworkSendIpPacket(uint8_t ctrlId, uint8_t protocol, uint8_t *pBuff
     pIpHeader->checksum = 0; // Packet checksum (hw calculated)
     memcpy(pIpHeader->srcIp, pNetworkCtrl->IpAddr, IP_ADDR_LENGTH); // Source ip address
     memcpy(pIpHeader->dstIp, msgInfo.DstIP, IP_ADDR_LENGTH); // Recipient ip address
-    msgInfo.HeaderSize += IPV4_HEADER_SIZE; // We take into account the ipv4 header
+    msgInfo.HeaderSize += (uint16_t)IPV4_HEADER_SIZE; // We take into account the ipv4 header
     // Send packet
     return NetworkSendEthPacket(ctrlId, pBuffer, msgInfo);
 }
@@ -549,7 +549,7 @@ static bool NetworkSendUdpPacket(uint8_t ctrlId, uint8_t *pBuffer, network_msg_i
 
     pUdpHeader->srcPort = UtilsRotrUint16(msgInfo.SrcPort, 8); // Source port
     pUdpHeader->dstPort = UtilsRotrUint16(msgInfo.DstPort, 8); // Destination port
-    pUdpHeader->length = UtilsRotrUint16((msgInfo.DataSize + UDP_HEADER_SIZE), 8); // Total size (data + header)
+    pUdpHeader->length = UtilsRotrUint16((msgInfo.DataSize + (uint16_t)UDP_HEADER_SIZE), 8); // Total size (data + header)
     pUdpHeader->checksum = 0; // Packet checksum (hw calculated)
     msgInfo.HeaderSize = UDP_HEADER_SIZE; // We take into account the udp header
 
@@ -583,7 +583,7 @@ static uint16_t NetworkIcmpChecksum(const uint16_t *pBuffer, uint16_t buffSize) 
  * \return uint16_t: icmp length
  */
 static uint16_t NetworkIcmpLength(uint8_t *pHeader, uint16_t ipMsgSize) {
-    uint16_t icmpMsgSize = (SWAP16(ipMsgSize) - IPV4_HEADER_SIZE);
+    uint16_t icmpMsgSize = (SWAP16(ipMsgSize) - (uint16_t)IPV4_HEADER_SIZE);
 
     // Add data if size is odd
     if ((icmpMsgSize % 2) > 0) {
@@ -594,7 +594,7 @@ static uint16_t NetworkIcmpLength(uint8_t *pHeader, uint16_t ipMsgSize) {
 }
 
 /**
- * \fn static bool NetworkSendIcmpEchoRequest(uint8_t ctrlId, const uint8_t *pIpAdress) 
+ * \fn static bool NetworkSendIcmpEchoRequest(uint8_t ctrlId, const uint8_t *pIpAdress)
  * \brief Send an icmp echo request
  *
  * \param ctrlId network controller id
@@ -623,14 +623,14 @@ static bool NetworkSendIcmpEchoRequest(uint8_t ctrlId, const uint8_t *pIpAdress)
     // Icmp checksum calculation
     msgLength = UtilsRotrUint16((sizeof(bufferRequest) - ETH_HEADER_SIZE), 8);
     pIcmpHeader->cksum = SWAP16(NetworkIcmpChecksum((uint16_t *)pIcmpHeader, NetworkIcmpLength((uint8_t *)pIcmpHeader, msgLength)));
-    msgInfo.HeaderSize += ICMP_HEADER_SIZE; // We take into account the icmp header
+    msgInfo.HeaderSize += (uint16_t)ICMP_HEADER_SIZE; // We take into account the icmp header
     // Get send time for delay calculation
     pNetworkCtrl->IcmpReplyDelay = NetworkInfo.pInitDesc->GenInterface.pFnTimerGetTime();
     return NetworkSendIpPacket(ctrlId, IP_PROT_ICMP, bufferRequest, msgInfo);
 }
 
 /**
- * \fn static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize)
+ * \fn static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize)
  * \brief Process icmp echo request packets
  *
  * \param ctrlId network controller id
@@ -638,7 +638,7 @@ static bool NetworkSendIcmpEchoRequest(uint8_t ctrlId, const uint8_t *pIpAdress)
  * \param buffSize buffer size
  * \return bool: true if processed successfully
  */
-static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
+static bool NetworkProcessIcmpEchoRequest(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize) {
     network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
     ethernet_header_t *p_eth = (ethernet_header_t*) pBuffer;
     ipv4_header_t *pIpHeader = (ipv4_header_t *)(pBuffer + ETH_HEADER_SIZE);
@@ -683,7 +683,7 @@ static bool NetworkProcessIcmpEchoReply(uint8_t ctrlId) {
 }
 
 /**
- * \fn static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t bufferSize)
+ * \fn static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize)
  * \brief Process incoming icmp packets
  *
  * \param ctrlId network controller id
@@ -691,12 +691,12 @@ static bool NetworkProcessIcmpEchoReply(uint8_t ctrlId) {
  * \param bufferSize buffer size
  * \return bool: true if processed successfully
  */
-static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t bufferSize) {
+static bool NetworkProcessIcmpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize) {
     icmp_header_t *pIcmpHeader = (icmp_header_t *)(pBuffer + ETH_HEADER_SIZE + IPV4_HEADER_SIZE);
 
     switch(pIcmpHeader->type) {
         case ICMP_ECHO_REQUEST:
-            return NetworkProcessIcmpEchoRequest(ctrlId, pBuffer, bufferSize);
+            return NetworkProcessIcmpEchoRequest(ctrlId, pBuffer, buffSize);
         break;
 
         case ICMP_ECHO_REPLY:
@@ -726,7 +726,7 @@ static uint8_t *NetworkDecodeUdpPacket(uint8_t *pBuffer, uint16_t *pDataSize, ui
     pUpdHeader->srcPort = UtilsRotrUint16(pUpdHeader->srcPort, 8);
     pUpdHeader->dstPort = UtilsRotrUint16(pUpdHeader->dstPort, 8);
     *pDestPort = pUpdHeader->dstPort;
-    *pDataSize = (UtilsRotrUint16(pUpdHeader->length, 8) - UDP_HEADER_SIZE);
+    *pDataSize = (UtilsRotrUint16(pUpdHeader->length, 8) - (uint16_t)UDP_HEADER_SIZE);
     // Send back data pointer
     return pBuffer + (ETH_HEADER_SIZE + IPV4_HEADER_SIZE + UDP_HEADER_SIZE);
 }
@@ -825,7 +825,7 @@ static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer) {
         }
     } else {
         // Virtual com port: Get as much data as possible and send to default dest ip address
-        msgSize = FifoItemCount(NetworkInfo.pPortInfoList[portId].pFifoTxMsg);
+        msgSize = (uint16_t)FifoItemCount(NetworkInfo.pPortInfoList[portId].pFifoTxMsg);
         memcpy(destIp, NetworkInfo.pPortInfoList[portId].DstIpAddr, IP_ADDR_LENGTH);
     }
     // Message size limitation
@@ -888,7 +888,7 @@ static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer) {
 }
 
 /**
- * \fn static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize)
+ * \fn static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize)
  * \brief Process incoming ip packets
  *
  * \param ctrlId: network controller id
@@ -896,7 +896,7 @@ static bool NetworkProcessSendMsg(uint8_t portId, uint8_t *pBuffer) {
  * \param buffSize: buffer size
  * \return bool: true if processed successfully
  */
-static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
+static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize) {
     ipv4_header_t *pIpHeader = (ipv4_header_t *)(pBuffer + ETH_HEADER_SIZE);
     ethernet_header_t *pEthHeader = (ethernet_header_t *)(pBuffer);
 
@@ -932,7 +932,7 @@ static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t bu
 }
 
 /**
- * \fn static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize)
+ * \fn static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize)
  * \brief Process incoming ethernet packets
  *
  * \param ctrlId network controller id
@@ -940,7 +940,7 @@ static bool NetworkProcessIpPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t bu
  * \param buffSize buffer size
  * \return bool: true if processed successfully
  */
-static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint32_t buffSize) {
+static bool NetworkProcessEthPacket(uint8_t ctrlId, uint8_t *pBuffer, uint16_t buffSize) {
     ethernet_header_t *pEthHeader = (ethernet_header_t*)(pBuffer);
     uint16_t protocol = SWAP16(pEthHeader->lengthOrType);
 
@@ -1015,8 +1015,8 @@ bool NetworkInit(const network_init_desc_t *pInitDesc) {
         // Copy desc address
         NetworkInfo.pInitDesc = pInitDesc;
         // Info structures memory allocation
-        NetworkInfo.pCtrlInfoList = MemAllocCalloc(sizeof(network_ctrl_info_t) * pInitDesc->CtrlNb);
-        NetworkInfo.pPortInfoList = MemAllocCalloc(sizeof(network_port_info_t) * pInitDesc->PortNb);
+        NetworkInfo.pCtrlInfoList = MemAllocCalloc((uint32_t)sizeof(network_ctrl_info_t) * pInitDesc->CtrlNb);
+        NetworkInfo.pPortInfoList = MemAllocCalloc((uint32_t)sizeof(network_port_info_t) * pInitDesc->PortNb);
         // Buffer memory allocation
         NetworkInfo.pBuffer = MemAllocCalloc(ETHERNET_FRAME_LENTGH_MAX);
         return true;
@@ -1036,7 +1036,7 @@ bool NetworkCtrlAdd(uint8_t ctrlId, const network_ctrl_desc_t *pCtrlDesc) {
         pNetworkCtrl->IcmpReplyDelay = 0;
         pNetworkCtrl->IcmpReplyReceived = false;
         // Init arp table
-        pNetworkCtrl->pArpArray = MemAllocCalloc(sizeof(arp_entry_t) * pCtrlDesc->ArpEntryNb);
+        pNetworkCtrl->pArpArray = MemAllocCalloc((uint32_t)sizeof(arp_entry_t) * pCtrlDesc->ArpEntryNb);
         // Init controller subnet mask
         memcpy(pNetworkCtrl->SubnetMask, pCtrlDesc->DefaultSubnetMask, IP_ADDR_LENGTH);
         // Init controller ip address
@@ -1203,7 +1203,7 @@ bool NetworkCtrlSendPingIcmp(uint8_t ctrlId, const uint8_t *pIpAddr) {
 bool NetworkCtrlCheckPingReply(uint8_t ctrlId, uint32_t *pDelayValue) {
     if (NetworkCtrlValid(ctrlId)) {
         network_ctrl_info_t *pNetworkCtrl = &(NetworkInfo.pCtrlInfoList[ctrlId]);
-        
+
         if ((pDelayValue != NULL) && (pNetworkCtrl->IcmpReplyReceived)) {
             *pDelayValue = pNetworkCtrl->IcmpReplyDelay;
         }
@@ -1243,7 +1243,7 @@ bool NetworkPortSendByte(uint8_t portId, uint8_t data, const uint8_t *pIpDest) {
 
 bool NetworkPortSendString(uint8_t portId, const char *str, const uint8_t *pIpDest) {
     if (NetworkPortValid(portId) && (str != NULL)) {
-        uint16_t strLgth = strlen(str);
+        uint16_t strLgth = (uint16_t)strlen(str);
 
         if (NetworkInfo.pPortInfoList[portId].IsVirtualComTx || (strLgth <= ETHERNET_MAX_DATA_SIZE)) {
             return NetworkStoreSendData(portId, (uint8_t*)str, strLgth, pIpDest);
@@ -1296,10 +1296,10 @@ bool NetworkPortReadBuff(uint8_t portId, uint8_t *pBuffer, uint16_t *pDataSize, 
             }
         } else {
             // Virtual com port: Get as much data as possible
-            msgSize = FifoItemCount(NetworkInfo.pPortInfoList[portId].pFifoRxMsg);
+            msgSize = (uint16_t)FifoItemCount(NetworkInfo.pPortInfoList[portId].pFifoRxMsg);
         }
         // Message size limitation
-        if (msgSize > buffSize) { 
+        if (msgSize > buffSize) {
             *pDataSize = buffSize;
             // Can't read in a non virtual com port if buffer is too small
             if (!NetworkInfo.pPortInfoList[portId].IsVirtualComRx) {
