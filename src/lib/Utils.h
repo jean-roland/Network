@@ -18,7 +18,7 @@
     You should have received a copy of the GNU General Public License
     along with Network. If not, see <https://www.gnu.org/licenses/>
  */
- 
+
 #ifndef _utils_h
 #define _utils_h
 
@@ -31,7 +31,7 @@
 // --- Public Types ---
 // --- Public Constants ---
 // Swap 2 bytes of a word
-#define SWAP16(x)   (((x & 0xff) << 8) | (x >> 8))
+#define SWAP16(x)   (uint16_t)(((x & 0xff) << 8) | (x >> 8))
 
 // --- Public Variables ---
 // --- Public Function Prototypes ---
